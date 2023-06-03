@@ -1,16 +1,12 @@
 package com.awesomeproject;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.animation.AnticipateInterpolator;
 
 import androidx.core.splashscreen.SplashScreen;
 
+import com.awesomeproject.viewmodel.MainViewModel;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
@@ -19,23 +15,24 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate;
 public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Handle the splash screen transition.
+        MainViewModel mainViewModel = new MainViewModel();
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        // Handle the splash screen transition.
+        splashScreen.setKeepOnScreenCondition(() -> mainViewModel.get_isLoading().getValue());
 
         super.onCreate(savedInstanceState);
 
         // Set up an OnPreDrawListener to the root view.
-        // For native
-        final View content = findViewById(android.R.id.content);
-        content.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        // Check whether the initial data is ready.
-                        content.getViewTreeObserver().removeOnPreDrawListener(this);
-                        return true;
-                    }
-                });
+//        final View content = findViewById(android.R.id.content);
+//        content.getViewTreeObserver().addOnPreDrawListener(
+//                new ViewTreeObserver.OnPreDrawListener() {
+//                    @Override
+//                    public boolean onPreDraw() {
+//                        // Check whether the initial data is ready.
+//                        content.getViewTreeObserver().removeOnPreDrawListener(this);
+//                        return true;
+//                    }
+//                });
 
 //         Add a callback that's called when the splash screen is animating to the
 //         app content.
