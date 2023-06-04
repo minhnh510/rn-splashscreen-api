@@ -1,8 +1,6 @@
 package com.awesomeproject;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewTreeObserver;
 
 import androidx.core.splashscreen.SplashScreen;
 
@@ -12,17 +10,34 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
+import javax.inject.Singleton;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends ReactActivity {
+    @Singleton
+    private static MainActivity instance;
+
+    @Singleton
+    public MainViewModel mainViewModel;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MainViewModel mainViewModel = new MainViewModel();
+        mainViewModel = new MainViewModel();
+        instance = this;
+
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         // Handle the splash screen transition.
         splashScreen.setKeepOnScreenCondition(() -> mainViewModel.get_isLoading().getValue());
 
         super.onCreate(savedInstanceState);
 
-        // Set up an OnPreDrawListener to the root view.
+        // Set up an OnPreDrawListener to the root view native.
 //        final View content = findViewById(android.R.id.content);
 //        content.getViewTreeObserver().addOnPreDrawListener(
 //                new ViewTreeObserver.OnPreDrawListener() {
@@ -33,32 +48,6 @@ public class MainActivity extends ReactActivity {
 //                        return true;
 //                    }
 //                });
-
-//         Add a callback that's called when the splash screen is animating to the
-//         app content.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//            getSplashScreen().setOnExitAnimationListener(splashScreenView -> {
-//                final ObjectAnimator slideUp = ObjectAnimator.ofFloat(
-//                        splashScreenView,
-//                        View.TRANSLATION_Y,
-//                        0f,
-//                        -splashScreenView.getHeight()
-//                );
-//                slideUp.setInterpolator(new AnticipateInterpolator());
-//                slideUp.setDuration(200L);
-//
-//                // Call SplashScreenView.remove at the end of your custom animation.
-//                slideUp.addListener(new AnimatorListenerAdapter() {
-//                    @Override
-//                    public void onAnimationEnd(Animator animation) {
-//                        splashScreenView.remove();
-//                    }
-//                });
-//
-//                // Run your animation.
-//                slideUp.start();
-//            });
-//        }
     }
 
     /**

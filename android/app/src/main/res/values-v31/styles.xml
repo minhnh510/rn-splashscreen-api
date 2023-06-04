@@ -11,7 +11,7 @@
         <!-- Required for animated icons -->
         <item name="windowSplashScreenAnimationDuration">200</item>
         <!-- show bottom image -->
-        <item name="android:windowSplashScreenBrandingImage">@drawable/pci_dss</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/img_ssl</item>
 
         <!-- Set the theme of the Activity that directly follows your splash screen. -->
         <!-- Required -->

@@ -1,6 +1,8 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "kotlin-kapt"
+apply plugin: "com.google.dagger.hilt.android"
 
 import com.android.build.OutputFile
 
@@ -131,6 +133,10 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
@@ -177,13 +183,27 @@ dependencies {
         }
     }
 
-    // custom
+    // custom splash
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // kotlin
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext.kotlinVersion}")
+
+    // kotlin-coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    // viewModelScope
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-compiler:2.44.2")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
